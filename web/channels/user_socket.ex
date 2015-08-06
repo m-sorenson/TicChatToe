@@ -3,6 +3,7 @@ defmodule TicChatToe.UserSocket do
 
   ## Channels
   # channel "rooms:*", TicChatToe.RoomChannel
+  channel "rooms:*", TicChatToe.RoomChannel
 
   ## Transports
   transport :websocket, Phoenix.Transports.WebSocket
