@@ -13,10 +13,27 @@ let lobbyInit = () => {
 
   let socket = new Socket("/socket");
   socket.connect();
-  let chan = socket.chan("rooms:lobby", {});
+  let chan = socket.chan("rooms:find_match", {});
 
   chan.on('new_msg', payload => {
     messages.append( $("<div>").html(payload.body));
+  });
+
+  chan.on('new_room', payload => {
+    let room = payload.room_id;
+    chan = socket.chan('rooms:' + room, {});
+    chan.join().receive("ok", resp => {
+      console.log("Joined room %s", room);
+    });
+    chan.on('new_msg', payload => {
+      messages.append( $("<div>").html(payload.body));
+    });
+    chatInput.on("keypress", event => {
+      if(event.keyCode === 13) {
+        chan.push("new_msg", { body: chatInput.val()});
+        chatInput.val("");
+      }
+    });
   });
 
   chatInput.on("keypress", event => {
@@ -28,6 +45,7 @@ let lobbyInit = () => {
 
   chan.join().receive("ok", resp => {
     console.log("Joined succesffuly!", resp)
+    chan.push("find_match", {});
   });
 };
 

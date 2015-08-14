@@ -26,7 +26,8 @@ defmodule TicChatToe.MatchMaker do
     {:noreply, [socket]}
   end
 
-  def handle_cast({:find_match, _socket}, _state) do
+  def handle_cast({:find_match, socket}, [waiting]) do
+    TicChatToe.RoomChannel.found_match({socket, waiting})
     {:noreply, []}
   end
 

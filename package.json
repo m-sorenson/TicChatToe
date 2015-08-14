@@ -6,6 +6,9 @@
     "clean-css-brunch": ">= 1.0 < 1.8",
     "css-brunch": ">= 1.0 < 1.8",
     "javascript-brunch": ">= 1.0 < 1.8",
+    "react": "^0.13.3",
+    "react-redux": "^0.8.2",
+    "redux": "^1.0.0",
     "sass-brunch": "^1.8.10",
     "uglify-js-brunch": ">= 1.0 < 1.8",
     "uuid": "^2.0.1"

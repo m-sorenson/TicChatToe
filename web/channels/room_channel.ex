@@ -1,8 +1,15 @@
 defmodule TicChatToe.RoomChannel do
   use Phoenix.Channel
 
+  #API
+
+  def found_match({socket_a, socket_b}) do
+    room_id = UUID.uuid1()
+    push socket_a, "new_room", %{ "room_id" => room_id }
+    push socket_b, "new_room", %{ "room_id" => room_id }
+  end
+
   def join("rooms:lobby", _auth_msg, socket) do
-    IO.inspect socket
     {:ok, socket}
   end
 
@@ -16,6 +23,11 @@ defmodule TicChatToe.RoomChannel do
 
   def handle_in("new_msg", %{"body" => body}, socket) do
     broadcast! socket, "new_msg", %{body: body}
+    {:noreply, socket}
+  end
+
+  def handle_in("find_match", _params, socket) do
+    TicChatToe.MatchMaker.find_match(socket)
     {:noreply, socket}
   end
 
