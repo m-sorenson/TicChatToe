@@ -12,5 +12,8 @@
     "sass-brunch": "^1.8.10",
     "uglify-js-brunch": ">= 1.0 < 1.8",
     "uuid": "^2.0.1"
+  },
+  "devDependencies": {
+    "babelify": "^6.2.0"
   }
 }
