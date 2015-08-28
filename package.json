@@ -1,5 +1,6 @@
 {
   "repository": {},
+  "scripts": {"babel": "browserify web/static/js/app.js -t babelify --outfile priv/static/js/app.js"},
   "dependencies": {
     "babel-brunch": "^5.1.1",
     "brunch": "^1.8.3",

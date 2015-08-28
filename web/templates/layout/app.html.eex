@@ -10,26 +10,11 @@
 
     <title>Hello Phoenix!</title>
     <link rel="stylesheet" href="<%= static_path(@conn, "/css/app.css") %>">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.5/darkly/bootstrap.min.css">
   </head>
 
   <body>
-    <!--<div class="container" role="main">
-      <div class="header">
-        <ul class="nav nav-pills pull-right">
-          <li><a href="http://www.phoenixframework.org/docs">Get Started</a></li>
-        </ul>
-        <span class="logo"></span>
-      </div>
-
-      <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
-      <p class="alert alert-danger" role="alert"><%= get_flash(@conn, :error) %></p>
-
-
-      </div> --><!-- /container -->
     <%= @inner %>
     <script src="<%= static_path(@conn, "/js/app.js") %>"></script>
-    <script>require("web/static/js/app")</script>
-
-
   </body>
 </html>
