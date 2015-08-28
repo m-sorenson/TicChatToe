@@ -5,7 +5,7 @@ import NavBar from '../components/Nav.js';
 import Chat from '../components/Chat.js';
 import * as MatchActions from '../actions/matches.js';
 
-export default class AppContents extends Component {
+class AppContents extends Component {
   render() {
     const {store, dispatch} = this.props
     const actions = bindActionCreators(MatchActions, dispatch)
@@ -30,4 +30,9 @@ export default class AppContents extends Component {
     );
   }
 }
-export default connect()()
+
+function select(state) {
+  return state
+}
+
+export default connect(select)(AppContents)
