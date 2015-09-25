@@ -11,3 +11,7 @@ export function lobbyMessage(msg) {
 export function sendMessage(msg) {
   return { type: types.SEND_MESSAGE, msg };
 }
+
+export function findMatch() {
+  return { type: types.FIND_MATCH };
+}

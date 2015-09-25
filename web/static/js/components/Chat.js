@@ -5,7 +5,7 @@ export default class Chat extends Component {
   render() {
     console.log('IN CHAT', this.props);
     return (
-        <div>
+        <div className='full-height'>
           <h3> Chat </h3>
           <ChatBox {...this.props}/>
         </div>

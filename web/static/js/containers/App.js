@@ -8,32 +8,28 @@ import * as MatchActions from '../actions/matches.js';
 
 class AppContents extends Component {
   componentDidMount() {
-    console.log("App contents mounted");
-    //console.log(this.props.WSocket);
     const {dispatch, WSocket, ticChat} = this.props;
-    console.log(ticChat);
-    //const actions = bindActionCreators(MatchActions, dispatch)
-    //this.props.WSocket.socket.connect();
-    //this.props.dispatch({ type: 'LOBBY_CONNECT' });
-    console.log(this.props);
     WSocket.lobby.on('new_msg', msg => dispatch(MatchActions.lobbyMessage(msg)));
+    WSocket.lobby.on('new_room', msg => dispatch(MatchActions.foundMatch(msg.room_id)));
   }
 
   render() {
     const { dispatch } = this.props;
     let actionCreators = bindActionCreators(MatchActions, dispatch);
 
+    let text = this.props.WSocket.game ? 'In Game' : 'Find Game';
+
     return (
-      <div>
+      <div className='full-height'>
         < NavBar/>
-        <div>
-          <div className='row'>
+        <div className='full-height'>
+          <div className='row full-height'>
             <div className='col-md-offset-1 col-md-7'>
-              <div className='jumbotron'>
-                <h1>Hello world</h1>
+              <div className='jumbotron' onClick={ actionCreators.findMatch }>
+                <h1> { text } </h1>
               </div>
             </div>
-            <div className='col-md-offset-1 col-md-3'>
+            <div className='col-md-offset-1 col-md-3 full-height'>
               <Chat {...this.props } {...actionCreators} />
             </div>
           </div>

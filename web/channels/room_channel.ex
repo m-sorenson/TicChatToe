@@ -21,8 +21,8 @@ defmodule TicChatToe.RoomChannel do
     {:ok, socket}
   end
 
-  def handle_in("new_msg", %{"body" => body}, socket) do
-    broadcast! socket, "new_msg", %{body: body}
+  def handle_in("new_msg", msg, socket) do
+    broadcast! socket, "new_msg", msg
     {:noreply, socket}
   end
 

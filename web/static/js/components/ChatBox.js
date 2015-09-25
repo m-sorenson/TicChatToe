@@ -4,10 +4,8 @@ import ChatInput from './ChatInput.js';
 
 export default class ChatBox extends Component {
   render() {
-    console.log('Chat box ');
-    console.log(this.props);
     return (
-        <div>
+        <div className='full-height'>
           <ChatMessages {...this.props} />
           <ChatInput {...this.props} />
         </div>
