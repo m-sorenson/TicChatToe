@@ -2,9 +2,14 @@ import React, { Component } from 'react';
 
 export default class ChatMessages extends Component {
   render() {
-    console.log(this.props.children)
+    let messages = this.props.ticChat.lobby.map( (msg) => {
+      return (
+          <h4> { msg.body } </h4>
+          );
+    });
     return (
         <div>
+          { messages }
         </div>
     );
   }

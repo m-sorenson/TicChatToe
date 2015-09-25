@@ -8,7 +8,6 @@ const store = createStore(rootReducer);
 
 export default class Root extends Component {
   render() {
-    console.log('this is store => ' + JSON.stringify(store));
     return (
       <Provider store={store} >
         {() => <AppContents />}

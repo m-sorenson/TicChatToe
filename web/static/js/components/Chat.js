@@ -3,10 +3,11 @@ import ChatBox from './ChatBox.js';
 
 export default class Chat extends Component {
   render() {
+    console.log('IN CHAT', this.props);
     return (
         <div>
           <h3> Chat </h3>
-          <ChatBox/>
+          <ChatBox {...this.props}/>
         </div>
     );
   }

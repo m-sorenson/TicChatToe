@@ -63,4 +63,3 @@ React.render(
     <Root/>,
     document.getElementById('appContainer')
 );
-console.log('we made it');
