@@ -1,6 +1,8 @@
 {
   "repository": {},
-  "scripts": {"babel": "browserify web/static/js/app.js -t babelify --outfile priv/static/js/app.js"},
+  "scripts": {
+    "babel": "browserify web/static/js/app.js -t babelify --outfile priv/static/js/app.js"
+  },
   "dependencies": {
     "babel-brunch": "^5.1.1",
     "brunch": "^1.8.3",
@@ -12,7 +14,8 @@
     "redux": "^1.0.0",
     "sass-brunch": "^1.8.10",
     "uglify-js-brunch": ">= 1.0 < 1.8",
-    "uuid": "^2.0.1"
+    "uuid": "^2.0.1",
+    "webrtc-adapter": "0.0.7"
   },
   "devDependencies": {
     "babelify": "^6.2.0"
