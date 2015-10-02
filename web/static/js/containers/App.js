@@ -3,7 +3,8 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import NavBar from '../components/Nav.js';
 import Chat from '../components/Chat.js';
-//import * from '../actions/matches.js';
+import FindGame from '../components/FindGame.js';
+import InGame from '../components/InGame.js';
 import * as MatchActions from '../actions/matches.js';
 
 class AppContents extends Component {
@@ -17,18 +18,16 @@ class AppContents extends Component {
     const { dispatch } = this.props;
     let actionCreators = bindActionCreators(MatchActions, dispatch);
 
-    let text = this.props.WSocket.game ? 'In Game' : 'Find Game';
+    let MainActivity = this.props.WSocket.game ? < InGame /> : <FindGame {...actionCreators} />;
 
     return (
       <div className='full-height'>
         < NavBar/>
         <div className='full-height'>
           <div className='row full-height'>
-            <div className='col-md-offset-1 col-md-7'>
-              <div className='jumbotron' onClick={ actionCreators.findMatch }>
-                <h1> { text } </h1>
-              </div>
-            </div>
+
+            { MainActivity }
+
             <div className='col-md-offset-1 col-md-3 full-height'>
               <Chat {...this.props } {...actionCreators} />
             </div>
