@@ -23,7 +23,7 @@ class AppContents extends Component {
     return (
       <div className='full-height'>
         < NavBar/>
-        <div className='full-height'>
+        <div className='fill-height'>
           <div className='row full-height'>
 
             { MainActivity }

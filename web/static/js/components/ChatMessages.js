@@ -5,7 +5,7 @@ export default class ChatMessages extends Component {
     let messages = this.props.ticChat.lobby.map( (msg) => {
       let from = msg.id === this.props.WSocket.id ? ' You' : ' Stranger';
       return (
-          <div>
+          <div className='message'>
             <h4> From: { from } </h4>
             <h4> { msg.payload } </h4>
           </div>
