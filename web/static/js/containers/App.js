@@ -9,9 +9,12 @@ import * as MatchActions from '../actions/matches.js';
 
 class AppContents extends Component {
   componentDidMount() {
-    const {dispatch, WSocket, ticChat} = this.props;
+    const {dispatch, WSocket, ticChat, Video} = this.props;
+    console.log(Video);
     WSocket.lobby.on('new_msg', msg => dispatch(MatchActions.lobbyMessage(msg)));
     WSocket.lobby.on('new_room', msg => dispatch(MatchActions.foundMatch(msg.room_id)));
+
+
   }
 
   render() {

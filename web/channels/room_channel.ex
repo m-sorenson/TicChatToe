@@ -22,7 +22,16 @@ defmodule TicChatToe.RoomChannel do
   end
 
   def handle_in("new_msg", msg, socket) do
+    IO.inspect msg
+    IO.inspect socket.id
+    id = socket.id
+    mod_msg = %{ msg | id: id }
+    IO.inspect mod_msg
     broadcast! socket, "new_msg", msg
+    #data = msg.payload
+    #with_id = %Phoenix.Socket.Message{ msg | payload: %{ data | id: socket.id }}
+    #IO.inspect with_id
+    #broadcast! socket, "new_msg", with_id
     {:noreply, socket}
   end
 
@@ -32,8 +41,23 @@ defmodule TicChatToe.RoomChannel do
   end
 
   def handle_out("new_msg", payload, socket) do
+    IO.inspect payload
+    #cond do
+    #  socket.id != payload.id ->
+    #    push socket, "new_msg", payload
+    #end
     push socket, "new_msg", payload
     {:noreply, socket}
   end
+
+  ## WebRTC only
+  #def handle_in("candidate", payload, socket) do
+  #  broadcast! socket, "candidate", %{ payload | :id => socket.id }
+  #  {:noreply, socket}
+  #end
+
+  #def handle_out("candidate", payload, socket) do
+
+  #end
 
 end

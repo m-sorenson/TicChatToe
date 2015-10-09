@@ -19,3 +19,8 @@ export function findMatch() {
 export function addStream(stream) {
   return { type: types.ADD_STREAM, stream };
 }
+
+export function strangerStream(stream) {
+  return { type: types.STRANGER_VIDEO, stream };
+}
+
