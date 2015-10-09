@@ -15,3 +15,7 @@ export function sendMessage(msg) {
 export function findMatch() {
   return { type: types.FIND_MATCH };
 }
+
+export function addStream(stream) {
+  return { type: types.ADD_STREAM, stream };
+}

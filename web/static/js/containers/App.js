@@ -18,7 +18,9 @@ class AppContents extends Component {
     const { dispatch } = this.props;
     let actionCreators = bindActionCreators(MatchActions, dispatch);
 
-    let MainActivity = this.props.WSocket.game ? < InGame /> : <FindGame {...actionCreators} />;
+    let MainActivity = this.props.WSocket.game ?
+      < InGame {...this.props} {...actionCreators} /> :
+      < FindGame {...actionCreators} />;
 
     return (
       <div className='full-height'>
