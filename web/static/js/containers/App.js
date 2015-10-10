@@ -9,11 +9,15 @@ import * as MatchActions from '../actions/matches.js';
 
 class AppContents extends Component {
   componentDidMount() {
+    console.log('Root is mounting');
     const {dispatch, WSocket, ticChat, Video} = this.props;
-    console.log(Video);
+    let that = this
     WSocket.lobby.on('new_msg', msg => dispatch(MatchActions.lobbyMessage(msg)));
     WSocket.lobby.on('new_room', msg => dispatch(MatchActions.foundMatch(msg.room_id)));
-
+    WSocket.lobby.on('start_call', msg => {
+      console.log("recieved start call message");
+      console.log(dispatch(MatchActions.startCall(true)))
+    });
 
   }
 

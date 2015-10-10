@@ -24,3 +24,11 @@ export function strangerStream(stream) {
   return { type: types.STRANGER_VIDEO, stream };
 }
 
+export function startCall(value) {
+  return { type: types.START_CALL, value };
+}
+
+export function addPeer(peer) {
+  return { type: types.ADD_PEER, peer };
+}
+

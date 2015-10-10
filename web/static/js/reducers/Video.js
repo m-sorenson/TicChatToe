@@ -1,10 +1,12 @@
-import { ADD_STREAM, LOCAL_VIDEO, STRANGER_VIDEO } from '../constants/ActionTypes.js';
+import { ADD_PEER, ADD_STREAM, LOCAL_VIDEO, STRANGER_VIDEO, START_CALL } from '../constants/ActionTypes.js';
 import { RTCPeerConnection } from 'webrtc-adapter';
 let config = require('../IceServer.js');
 let _ = require('lodash')
 
 const initalState = {
-  peerConn: new RTCPeerConnection(config),
+  startCall: false,
+  //peerConn: new RTCPeerConnection(config),
+  peerConn: undefined,
   you: {
     stream: undefined,
     videoSrc: undefined
@@ -18,7 +20,6 @@ const initalState = {
 export default function Video(state = initalState, action ) {
   switch(action.type) {
     case ADD_STREAM:
-      console.log(action);
       return _.assign(state,
           { you:
             {
@@ -34,7 +35,12 @@ export default function Video(state = initalState, action ) {
               videoSrc: window.URL.createObjectURL(action.stream)
             }
           })
-
+    case START_CALL:
+      let next_state = { ...state, startCall: action.value }
+      console.log('Setting startCall value to ', next_state);
+      return next_state
+    case ADD_PEER:
+      return {...state, peerConn: action.peer }
     default:
       return state;
   }

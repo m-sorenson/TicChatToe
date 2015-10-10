@@ -1,26 +1,32 @@
 import React, { Component } from 'react';
-import Adapter from 'webrtc-adapter';
+import { RTCPeerConnection, RTCIceCandidate, RTCSessionDescription } from 'webrtc-adapter';
 import getUserMedia from 'getusermedia';
+let config = require('../IceServer.js');
 
 export default class InGame extends Component {
   componentDidMount() {
     const { WSocket, Video } = this.props;
+    console.log("InGame Video");
+    console.log(Video);
     let addStream = this.props.addStream;
     let that = this;
-    getUserMedia(function (err, success) {
-      if(err) {
-        console.log(err);
-      } else {
-        addStream(success);
-        that.forceUpdate();
-      }
-    })
+    //getUserMedia(function (err, success) {
+    //  if(err) {
+    //    console.log(err);
+    //  } else {
+    //    addStream(success);
+    //    that.forceUpdate();
+    //  }
+    //})
 
     let strangerStream = this.props.strangerStream
-    let peerConn = Video.peerConn
+    let addPeer = this.props.addPeer
+    //let peerConn = Video.peerConn
     function start(isCaller, data) {
+      console.log("start was called.");
+      let peerConn = new RTCPeerConnection(config);
       peerConn.onicecandidate = function(evt) {
-        WSocket.game.push('candidate', { candidate: evt.candidate });
+        WSocket.game.push('candidate', { value: evt.candidate });
       };
       if(Video.you.stream) {
         peerConn.addStream(Video.you.stream);
@@ -46,11 +52,36 @@ export default class InGame extends Component {
       }
       function gotDescription(desc) {
         peerConn.setLocalDescription(desc);
-        WSocket.game.push('sdp', {stranger: that.state.stranger, content: desc});
+        WSocket.game.push('sdp', { value: desc });
       }
       // lets see if this is not needed
       //that.setState({peerConn: peerConn});
+      addPeer(peerConn)
     };
+
+    WSocket.game.on('candidate', (msg) => {
+      let candidate = new RTCIceCandidate(msg.value)
+      if(!Video.peerConn) {
+        start(false, { iceCandidate: candidate })
+      } else {
+        Video.peerConn.addIceCandidate(candidate)
+      }
+    })
+
+    WSocket.game.on('sdp', (msg) => {
+      let desc = new RTCSessionDescription(msg.value)
+      if(!Video.peerConn) {
+        start(false, { remoteDescription: desc })
+      } else {
+        Video.peerConn.setRemoteDescription(desc)
+      }
+    })
+
+    if(Video.startCall) {
+      console.log("Start call was called");
+      start(true, {})
+      this.props.startCall(false)
+    }
   }
 
   render() {
