@@ -6,6 +6,7 @@ defmodule TicChatToe.RoomChannel do
   def found_match({socket_a, socket_b}) do
     room_id = UUID.uuid1()
     push socket_a, "new_room", %{ "room_id" => room_id }
+    push socket_a, "start_call", %{ }
     push socket_b, "new_room", %{ "room_id" => room_id }
   end
 
@@ -22,16 +23,7 @@ defmodule TicChatToe.RoomChannel do
   end
 
   def handle_in("new_msg", msg, socket) do
-    IO.inspect msg
-    IO.inspect socket.id
-    id = socket.id
-    mod_msg = %{ msg | id: id }
-    IO.inspect mod_msg
     broadcast! socket, "new_msg", msg
-    #data = msg.payload
-    #with_id = %Phoenix.Socket.Message{ msg | payload: %{ data | id: socket.id }}
-    #IO.inspect with_id
-    #broadcast! socket, "new_msg", with_id
     {:noreply, socket}
   end
 
@@ -40,24 +32,39 @@ defmodule TicChatToe.RoomChannel do
     {:noreply, socket}
   end
 
-  def handle_out("new_msg", payload, socket) do
-    IO.inspect payload
-    #cond do
-    #  socket.id != payload.id ->
-    #    push socket, "new_msg", payload
-    #end
-    push socket, "new_msg", payload
+  ## WebRTC only
+  intercept ["candidate", "sdp"]
+
+  def handle_in("candidate", payload, socket) do
+    IO.puts "candidate event"
+    broadcast! socket, "candidate", %{ payload | "filter" => socket.id }
     {:noreply, socket}
   end
 
-  ## WebRTC only
-  #def handle_in("candidate", payload, socket) do
-  #  broadcast! socket, "candidate", %{ payload | :id => socket.id }
-  #  {:noreply, socket}
-  #end
+  def handle_in("sdp", payload, socket) do
+    IO.puts "sdp event"
+    broadcast! socket, "sdp", %{ payload | "filter" => socket.id }
+    {:noreply, socket}
+  end
 
-  #def handle_out("candidate", payload, socket) do
+  def handle_out("candidate", %{ "filter" => filter, "value" => value }, socket) do
+    cond do
+      filter != socket.id ->
+        push socket, "candidate", %{ "value" => value }
+      true ->
+        :ok
+    end
+    {:noreply, socket}
+  end
 
-  #end
+  def handle_out("sdp", %{ "filter" => filter, "value" => value }, socket) do
+    cond do
+      filter != socket.id ->
+        push socket, "sdp", %{ "value" => value }
+      true ->
+        :ok
+    end
+    {:noreply, socket}
+  end
 
 end
