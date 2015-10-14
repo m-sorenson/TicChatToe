@@ -5,25 +5,16 @@ import NavBar from '../components/Nav.js';
 import Chat from '../components/Chat.js';
 import FindGame from '../components/FindGame.js';
 import InGame from '../components/InGame.js';
+import LobbyChannel from '../components/LobbyChannel.js';
 import * as MatchActions from '../actions/matches.js';
 
 class AppContents extends Component {
-  componentDidMount() {
-    console.log('Root is mounting');
-    const {dispatch, WSocket, ticChat, Video} = this.props;
-    let that = this
-    WSocket.lobby.on('new_msg', msg => dispatch(MatchActions.lobbyMessage(msg)));
-    WSocket.lobby.on('new_room', msg => dispatch(MatchActions.foundMatch(msg.room_id)));
-    WSocket.lobby.on('start_call', msg => {
-      console.log("recieved start call message");
-      console.log(dispatch(MatchActions.startCall(true)))
-    });
-
-  }
 
   render() {
     const { dispatch } = this.props;
     let actionCreators = bindActionCreators(MatchActions, dispatch);
+    let nullViews = [];
+    nullViews.push(< LobbyChannel {...this.props } {...actionCreators} />)
 
     let MainActivity = this.props.WSocket.game ?
       < InGame {...this.props} {...actionCreators} /> :
@@ -42,6 +33,7 @@ class AppContents extends Component {
             </div>
           </div>
         </div>
+        { nullViews }
       </div>
     );
   }
