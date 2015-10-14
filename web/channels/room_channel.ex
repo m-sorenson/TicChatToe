@@ -37,13 +37,13 @@ defmodule TicChatToe.RoomChannel do
 
   def handle_in("candidate", payload, socket) do
     IO.puts "candidate event"
-    broadcast! socket, "candidate", %{ payload | "filter" => socket.id }
+    broadcast! socket, "candidate", Map.merge(payload, %{ "filter" => socket.id })
     {:noreply, socket}
   end
 
   def handle_in("sdp", payload, socket) do
     IO.puts "sdp event"
-    broadcast! socket, "sdp", %{ payload | "filter" => socket.id }
+    broadcast! socket, "sdp", Map.merge(payload, %{ "filter" => socket.id })
     {:noreply, socket}
   end
 
