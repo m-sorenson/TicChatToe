@@ -8,7 +8,10 @@ export default class LobbyChannel extends Component {
     WSocket.lobby.on('new_room', msg => this.props.foundMatch(msg.room_id));
     WSocket.lobby.on('start_call', msg => {
       console.log("recieved start call message");
-      console.log(this.props.startCall(true))
+      let that = this
+      setTimeout(function() {
+        that.props.Video.peerConn.createOffer(that.props.gotDescription)
+      }, 1000);
     });
   }
 

@@ -1,4 +1,4 @@
-import { SEND_MESSAGE, FIND_MATCH, FOUND_MATCH } from '../constants/ActionTypes.js';
+import { GOT_DESC, SEND_MESSAGE, FIND_MATCH, FOUND_MATCH } from '../constants/ActionTypes.js';
 import { Socket } from '../phoenix';
 import Uuid from 'uuid';
 
@@ -29,6 +29,10 @@ export default function WSocket(state = initalState, action ) {
       let game_room = state.socket.channel("rooms:" + action.id, {});
       game_room.join();
       return {...state, game: game_room}
+    case GOT_DESC:
+      console.log('Got SDP in socket');
+      console.log(state.game);
+      state.game.push('sdp', { value: action.desc })
     default:
       return state;
   }

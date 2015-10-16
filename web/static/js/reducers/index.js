@@ -4,9 +4,9 @@ import WSocket from './WSocket.js';
 import Video from './Video.js';
 
 const rootReducer = combineReducers({
+  Video,
   WSocket,
-  ticChat,
-  Video
+  ticChat
 });
 
 export default rootReducer;
