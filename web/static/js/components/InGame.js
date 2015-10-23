@@ -5,20 +5,21 @@ import GameChannel from './GameChannel.js';
 //let config = require('../IceServer.js');
 
 export default class InGame extends Component {
-  //componentDidMount() {
+  componentDidMount() {
   //  const { WSocket, Video } = this.props;
   //  console.log("InGame Video");
   //  console.log(Video);
-  //  let addStream = this.props.addStream;
-  //  let that = this;
-  //  getUserMedia(function (err, success) {
-  //    if(err) {
-  //      console.log(err);
-  //    } else {
-  //      addStream(success);
-  //      that.forceUpdate();
-  //    }
-  //  })
+    let addStream = this.props.addStream;
+    let that = this;
+    getUserMedia(function (err, success) {
+      if(err) {
+        console.log(err);
+      } else {
+        addStream(success);
+        that.forceUpdate();
+      }
+    })
+  }
 
   //  let strangerStream = this.props.strangerStream
   //  let addPeer = this.props.addPeer

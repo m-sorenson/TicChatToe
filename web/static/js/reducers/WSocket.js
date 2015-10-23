@@ -30,8 +30,8 @@ export default function WSocket(state = initalState, action ) {
       game_room.join();
       return {...state, game: game_room}
     case GOT_DESC:
-      console.log('Got SDP in socket');
-      console.log(state.game);
+      console.log('sending desc');
+      console.log(action.desc)
       state.game.push('sdp', { value: action.desc })
     default:
       return state;
