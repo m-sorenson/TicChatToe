@@ -1,7 +1,9 @@
-import { GOT_DESC, SEND_MESSAGE, FIND_MATCH, FOUND_MATCH } from '../constants/ActionTypes.js';
+import { SEND_MESSAGE, FIND_MATCH, FOUND_MATCH } from '../constants/ActionTypes.js';
 import { Socket } from '../phoenix';
 import Uuid from 'uuid';
+let Peer = require('peerjs');
 
+let id = Uuid.v4();
 let initalSocket = new Socket('/socket');
 initalSocket.connect();
 let lobbyChan = initalSocket.channel("rooms:lobby", {});
@@ -10,7 +12,8 @@ lobbyChan.join();
 const initalState = {
   socket: initalSocket,
   lobby: lobbyChan,
-  id: Uuid.v4(),
+  id: id,
+  peer: new Peer(id, { host: 'stark-reef-2811.herokuapp.com', port: 80 }),
   looking: false
 };
 
@@ -21,7 +24,7 @@ export default function WSocket(state = initalState, action ) {
       return state;
     case FIND_MATCH:
       if(!state.looking) {
-        state.lobby.push('find_match');
+        state.lobby.push('find_match', { id: state.id });
       }
       return {...state, looking: true}
     case FOUND_MATCH:
@@ -29,10 +32,6 @@ export default function WSocket(state = initalState, action ) {
       let game_room = state.socket.channel("rooms:" + action.id, {});
       game_room.join();
       return {...state, game: game_room}
-    case GOT_DESC:
-      console.log('sending desc');
-      console.log(action.desc)
-      state.game.push('sdp', { value: action.desc })
     default:
       return state;
   }

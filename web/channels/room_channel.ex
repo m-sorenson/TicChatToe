@@ -5,6 +5,7 @@ defmodule TicChatToe.RoomChannel do
 
   def found_match({socket_a, socket_b}) do
     room_id = UUID.uuid1()
+    IO.inspect socket_a
     push socket_a, "new_room", %{ "room_id" => room_id }
     push socket_a, "start_call", %{ }
     push socket_b, "new_room", %{ "room_id" => room_id }
@@ -27,43 +28,10 @@ defmodule TicChatToe.RoomChannel do
     {:noreply, socket}
   end
 
-  def handle_in("find_match", _params, socket) do
+  def handle_in("find_match", %{ id: id } , socket) do
+    socket = assign(socket, :id, id)
+    IO.inspect socket
     TicChatToe.MatchMaker.find_match(socket)
-    {:noreply, socket}
-  end
-
-  ## WebRTC only
-  intercept ["candidate", "sdp"]
-
-  def handle_in("candidate", payload, socket) do
-    IO.puts "candidate event"
-    broadcast! socket, "candidate", Map.merge(payload, %{ "filter" => socket.id })
-    {:noreply, socket}
-  end
-
-  def handle_in("sdp", payload, socket) do
-    IO.puts "sdp event"
-    broadcast! socket, "sdp", Map.merge(payload, %{ "filter" => socket.id })
-    {:noreply, socket}
-  end
-
-  def handle_out("candidate", %{ "filter" => filter, "value" => value }, socket) do
-    cond do
-      filter != socket.id ->
-        push socket, "candidate", %{ "value" => value }
-      true ->
-        :ok
-    end
-    {:noreply, socket}
-  end
-
-  def handle_out("sdp", %{ "filter" => filter, "value" => value }, socket) do
-    cond do
-      filter != socket.id ->
-        push socket, "sdp", %{ "value" => value }
-      true ->
-        :ok
-    end
     {:noreply, socket}
   end
 

@@ -18,21 +18,6 @@ export default class GameChannel extends Component {
       }
     })
 
-    Video.peerConn.onicecandidate = function(evt) {
-      console.log('Candidate event.');
-      WSocket.game.push('candidate', { value: evt.candidate });
-    }
-    Video.peerConn.onaddstream = function(evt) {
-      console.log('add stream event.');
-      this.props.strangerStream(evt.stream);
-    }
-    Video.peerConn.oniceconnectionstatechange = function () {
-      console.log('connection changed');
-      console.log(Video.peerConn.iceConnectionState);
-      if(Video.peerConn.iceConnectionState == 'disconnected') {
-        console.log('PEER DISCONNECTED, TODO: clean things up');
-      }
-    }
   }
 
   render() {
