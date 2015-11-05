@@ -5,14 +5,13 @@ defmodule TicChatToe.RoomChannel do
 
   def found_match({socket_a, socket_b}) do
     room_id = UUID.uuid1()
-    IO.inspect socket_a
     push socket_a, "new_room", %{ "room_id" => room_id }
-    push socket_a, "start_call", %{ }
+    push socket_a, "start_call", %{ "id" => socket_b.assigns.id }
     push socket_b, "new_room", %{ "room_id" => room_id }
   end
 
-  def join("rooms:lobby", _auth_msg, socket) do
-    {:ok, socket}
+  def join("rooms:lobby", %{ "id" => id }, socket) do
+    {:ok, assign(socket, :id, id)}
   end
 
   def join("rooms:find_match", _auth_msg, socket) do
@@ -28,9 +27,7 @@ defmodule TicChatToe.RoomChannel do
     {:noreply, socket}
   end
 
-  def handle_in("find_match", %{ id: id } , socket) do
-    socket = assign(socket, :id, id)
-    IO.inspect socket
+  def handle_in("find_match", _params , socket) do
     TicChatToe.MatchMaker.find_match(socket)
     {:noreply, socket}
   end

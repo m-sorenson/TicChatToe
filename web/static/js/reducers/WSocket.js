@@ -6,7 +6,7 @@ let Peer = require('peerjs');
 let id = Uuid.v4();
 let initalSocket = new Socket('/socket');
 initalSocket.connect();
-let lobbyChan = initalSocket.channel("rooms:lobby", {});
+let lobbyChan = initalSocket.channel("rooms:lobby", {id: id});
 lobbyChan.join();
 
 const initalState = {
@@ -24,11 +24,10 @@ export default function WSocket(state = initalState, action ) {
       return state;
     case FIND_MATCH:
       if(!state.looking) {
-        state.lobby.push('find_match', { id: state.id });
+        state.lobby.push('find_match');
       }
       return {...state, looking: true}
     case FOUND_MATCH:
-      console.log(action);
       let game_room = state.socket.channel("rooms:" + action.id, {});
       game_room.join();
       return {...state, game: game_room}

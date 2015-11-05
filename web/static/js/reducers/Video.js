@@ -1,6 +1,4 @@
 import { FOUND_MATCH, ADD_STREAM, LOCAL_VIDEO, STRANGER_VIDEO } from '../constants/ActionTypes.js';
-//import { RTCPeerConnection } from 'webrtc-adapter';
-//let config = require('../IceServer.js');
 let _ = require('lodash')
 
 const initalState = {
@@ -20,21 +18,21 @@ let peer
 export default function Video(state = initalState, action ) {
   switch(action.type) {
     case ADD_STREAM:
-      return _.assign(state,
-          { you:
+      return {...state,
+           you:
             {
               stream: action.stream,
               videoSrc: window.URL.createObjectURL(action.stream)
             }
-          })
+          }
     case STRANGER_VIDEO:
-      return _.assign(state,
-          { stranger:
+      return {...state,
+           stranger:
             {
               stream: action.stream,
               videoSrc: window.URL.createObjectURL(action.stream)
             }
-          })
+          }
     default:
       return state;
   }
